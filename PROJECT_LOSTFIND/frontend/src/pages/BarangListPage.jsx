@@ -221,12 +221,14 @@ export function BarangListPage() {
               ))}
             </motion.div>
 
-            {/* Pagination */}
-            <div className="flex justify-center pt-8">
-              <div className="bg-white px-8 py-4 rounded-full shadow-xl shadow-blue-900/5 border border-slate-50 flex items-center gap-4">
-                <Pagination page={page} count={count} onChange={setPage} />
+            {/* Pagination - Diperbaiki logikanya di sini */}
+            {(count > items.length || page > 1) && (
+              <div className="flex justify-center pt-8">
+                <div className="bg-white px-8 py-4 rounded-full shadow-xl shadow-blue-900/5 border border-slate-50 flex items-center gap-4">
+                  <Pagination page={page} count={count} onChange={setPage} />
+                </div>
               </div>
-            </div>
+            )}
           </div>
         )}
       </div>
