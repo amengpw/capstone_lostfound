@@ -22,15 +22,13 @@ const errorData = {
   },
   403: {
     title: "Akses ditolak",
-    description:
-      "Anda tidak memiliki izin untuk melihat halaman ini.",
+    description: "Anda tidak memiliki izin untuk melihat halaman ini.",
     action: "Kembali ke Beranda",
     icon: ShieldCheck,
   },
   404: {
     title: "Halaman tidak ditemukan",
-    description:
-      "Halaman yang Anda cari tidak ada atau sudah dipindahkan.",
+    description: "Halaman yang Anda cari tidak ada atau sudah dipindahkan.",
     action: "Kembali ke Beranda",
     icon: ArrowLeftRight,
   },
@@ -70,20 +68,13 @@ export default function ErrorPage({ statusCode: statusProp }) {
               </p>
             </div>
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+              {/* Tombol biru murni tanpa diubah logikanya sama sekali */}
               <Link
                 to={isLoginRedirect ? "/login" : "/"}
                 className="inline-flex items-center justify-center rounded-3xl bg-[#003366] px-6 py-4 text-sm font-black uppercase tracking-[0.22em] text-[#ffcc00] shadow-lg shadow-[#003366]/15 transition-transform hover:-translate-y-0.5 active:scale-[0.98]"
               >
                 {info.action}
               </Link>
-              {status === 500 && (
-                <button
-                  onClick={() => window.location.reload()}
-                  className="inline-flex items-center justify-center rounded-3xl border border-slate-200 bg-white px-6 py-4 text-sm font-bold uppercase tracking-[0.2em] text-slate-700 transition-colors hover:bg-slate-50"
-                >
-                  Muat Ulang Halaman
-                </button>
-              )}
             </div>
           </div>
           <div className="rounded-[2rem] bg-[#003366] p-8 text-white flex flex-col justify-between">
