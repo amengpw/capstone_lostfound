@@ -8,6 +8,7 @@ import HomePage from "./pages/HomePage.jsx";
 import LaporPage from "./pages/LaporPage.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
 import RegisterPage from "./pages/RegisterPage.jsx";
+import ErrorPage from "./pages/ErrorPage.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import BarangListPage from "./pages/BarangListPage.jsx";
 import BarangDetailPage from "./pages/BarangDetailPage.jsx";
@@ -48,15 +49,10 @@ function App() {
           />
         </Route>
 
+        <Route path="/error/:statusCode" element={<ErrorPage />} />
+
         {/* Fallback Route jika user mengetik URL asal */}
-        <Route
-          path="*"
-          element={
-            <div style={{ padding: "20px", textAlign: "center" }}>
-              <h2>404 - Halaman Tidak Ditemukan</h2>
-            </div>
-          }
-        />
+        <Route path="*" element={<ErrorPage statusCode={404} />} />
       </Routes>
     </>
   );
