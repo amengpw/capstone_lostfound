@@ -69,7 +69,7 @@ export default function BarangDetailPage() {
   const handleKlaimSubmit = async () => {
     if (!ktmFile) return toast.error("Upload foto KTM terlebih dahulu.");
     if (!barangFile) return toast.error("Upload foto barang terlebih dahulu.");
-    
+
     setSubmitting(true);
     try {
       const fd = new FormData();
@@ -106,7 +106,10 @@ export default function BarangDetailPage() {
 
   const handleBukaChat = async (userId) => {
     try {
-      const { data } = await chatAPI.bukaRuang({ user_id: userId, laporan_id: Number(laporanId) });
+      const { data } = await chatAPI.bukaRuang({
+        user_id: userId,
+        laporan_id: Number(laporanId),
+      });
       navigate("/chat", { state: { ruangId: data.id } });
     } catch {
       toast.error("Gagal membuka chat.");
@@ -114,7 +117,12 @@ export default function BarangDetailPage() {
   };
 
   if (loading) return <LoadingPage />;
-  if (!laporan) return <div className="text-center py-20 text-slate-400">Laporan tidak ditemukan.</div>;
+  if (!laporan)
+    return (
+      <div className="text-center py-20 text-slate-400">
+        Laporan tidak ditemukan.
+      </div>
+    );
 
   const fotos = laporan.fotos ?? [];
   const klaimSaya = laporan.klaim_saya;
@@ -139,7 +147,6 @@ export default function BarangDetailPage() {
 
         <div className="bg-white rounded-[2.5rem] shadow-2xl shadow-blue-900/5 border border-slate-100 overflow-hidden">
           <div className="grid grid-cols-1 lg:grid-cols-2">
-            
             {/* Kiri: Gallery Section */}
             <div className="p-6 lg:p-10 bg-slate-50/50">
               <div className="aspect-square bg-white rounded-[2rem] overflow-hidden mb-6 relative shadow-inner border border-slate-100 flex items-center justify-center">
@@ -155,7 +162,9 @@ export default function BarangDetailPage() {
                   ) : (
                     <div className="text-slate-300 flex flex-col items-center gap-2">
                       <ImageIcon size={64} strokeWidth={1} />
-                      <span className="font-medium text-sm">Tidak ada foto barang</span>
+                      <span className="font-medium text-sm">
+                        Tidak ada foto barang
+                      </span>
                     </div>
                   )}
                 </AnimatePresence>
@@ -168,10 +177,15 @@ export default function BarangDetailPage() {
                       key={f.id}
                       onClick={() => setActiveImg(i)}
                       className={`w-20 h-20 rounded-2xl overflow-hidden border-2 flex-shrink-0 transition-all ${
-                        i === activeImg ? "border-[#ffcc00] ring-4 ring-[#ffcc00]/20" : "border-transparent opacity-50"
+                        i === activeImg
+                          ? "border-[#ffcc00] ring-4 ring-[#ffcc00]/20"
+                          : "border-transparent opacity-50"
                       }`}
                     >
-                      <img src={f.foto_url} className="w-full h-full object-cover" />
+                      <img
+                        src={f.foto_url}
+                        className="w-full h-full object-cover"
+                      />
                     </button>
                   ))}
                 </div>
@@ -199,7 +213,9 @@ export default function BarangDetailPage() {
                     <MapPin size={20} />
                   </div>
                   <div>
-                    <p className="text-[10px] uppercase tracking-wider text-slate-400 font-bold">Lokasi Temuan</p>
+                    <p className="text-[10px] uppercase tracking-wider text-slate-400 font-bold">
+                      Lokasi Temuan
+                    </p>
                     <p className="text-[#003366] font-bold">{laporan.lokasi}</p>
                   </div>
                 </div>
@@ -209,9 +225,15 @@ export default function BarangDetailPage() {
                     <Calendar size={20} />
                   </div>
                   <div>
-                    <p className="text-[10px] uppercase tracking-wider text-slate-400 font-bold">Tanggal</p>
+                    <p className="text-[10px] uppercase tracking-wider text-slate-400 font-bold">
+                      Tanggal
+                    </p>
                     <p className="text-[#003366] font-bold">
-                      {format(new Date(laporan.tanggal_kejadian), "d MMMM yyyy", { locale: id })}
+                      {format(
+                        new Date(laporan.tanggal_kejadian),
+                        "d MMMM yyyy",
+                        { locale: id },
+                      )}
                     </p>
                   </div>
                 </div>
@@ -221,8 +243,12 @@ export default function BarangDetailPage() {
                     <User size={20} />
                   </div>
                   <div>
-                    <p className="text-[10px] uppercase tracking-wider text-slate-400 font-bold">Dilaporkan Oleh</p>
-                    <p className="text-[#003366] font-bold">{laporan.pelapor?.nama_lengkap}</p>
+                    <p className="text-[10px] uppercase tracking-wider text-slate-400 font-bold">
+                      Dilaporkan Oleh
+                    </p>
+                    <p className="text-[#003366] font-bold">
+                      {laporan.pelapor?.nama_lengkap}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -263,28 +289,86 @@ export default function BarangDetailPage() {
                         AJUKAN KLAIM BARANG
                       </button>
                     ) : (
-                      <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="p-6 bg-yellow-50 rounded-3xl border border-yellow-200 space-y-4">
+                      <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="p-6 bg-yellow-50 rounded-3xl border border-yellow-200 space-y-4"
+                      >
                         <div className="flex items-center gap-2 text-[#003366] font-black mb-2">
-                          <ShieldCheck className="text-[#ffcc00]" /> VERIFIKASI KEPEMILIKAN
+                          <ShieldCheck className="text-[#ffcc00]" /> VERIFIKASI
+                          KEPEMILIKAN
                         </div>
-                        
+
                         <div className="grid grid-cols-2 gap-3">
-                           <label className="cursor-pointer bg-white p-4 rounded-xl border border-dashed border-yellow-400 flex flex-col items-center gap-2">
-                              <Upload size={20} className="text-yellow-600"/>
-                              <span className="text-[10px] font-bold text-slate-500 text-center">FOTO KTM</span>
-                              <input type="file" className="hidden" onChange={(e) => {
-                                setKtmFile(e.target.files[0]);
-                                setKtmPrev(URL.createObjectURL(e.target.files[0]));
-                              }} />
-                           </label>
-                           <label className="cursor-pointer bg-white p-4 rounded-xl border border-dashed border-yellow-400 flex flex-col items-center gap-2">
-                              <Upload size={20} className="text-yellow-600"/>
-                              <span className="text-[10px] font-bold text-slate-500 text-center">FOTO BARANG</span>
-                              <input type="file" className="hidden" onChange={(e) => {
-                                setBarangFile(e.target.files[0]);
-                                setBarangPrev(URL.createObjectURL(e.target.files[0]));
-                              }} />
-                           </label>
+                          {/* FOTO KTM */}
+                          <label className="cursor-pointer bg-white p-2 rounded-xl border border-dashed border-yellow-400 flex flex-col items-center justify-center gap-2 h-28 relative overflow-hidden group">
+                            {ktmPrev ? (
+                              <>
+                                <img
+                                  src={ktmPrev}
+                                  alt="Preview KTM"
+                                  className="w-full h-full object-cover rounded-lg opacity-80 group-hover:opacity-50 transition-opacity"
+                                />
+                                <span className="absolute text-[10px] font-bold text-slate-700 bg-white/80 px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity">
+                                  UBAH FOTO
+                                </span>
+                              </>
+                            ) : (
+                              <>
+                                <Upload size={20} className="text-yellow-600" />
+                                <span className="text-[10px] font-bold text-slate-500 text-center">
+                                  FOTO KTM
+                                </span>
+                              </>
+                            )}
+                            <input
+                              type="file"
+                              accept="image/*"
+                              className="hidden"
+                              onChange={(e) => {
+                                const file = e.target.files[0];
+                                if (file) {
+                                  setKtmFile(file);
+                                  setKtmPrev(URL.createObjectURL(file));
+                                }
+                              }}
+                            />
+                          </label>
+
+                          {/* FOTO BARANG */}
+                          <label className="cursor-pointer bg-white p-2 rounded-xl border border-dashed border-yellow-400 flex flex-col items-center justify-center gap-2 h-28 relative overflow-hidden group">
+                            {barangPrev ? (
+                              <>
+                                <img
+                                  src={barangPrev}
+                                  alt="Preview Barang"
+                                  className="w-full h-full object-cover rounded-lg opacity-80 group-hover:opacity-50 transition-opacity"
+                                />
+                                <span className="absolute text-[10px] font-bold text-slate-700 bg-white/80 px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity">
+                                  UBAH FOTO
+                                </span>
+                              </>
+                            ) : (
+                              <>
+                                <Upload size={20} className="text-yellow-600" />
+                                <span className="text-[10px] font-bold text-slate-500 text-center">
+                                  FOTO BARANG
+                                </span>
+                              </>
+                            )}
+                            <input
+                              type="file"
+                              accept="image/*"
+                              className="hidden"
+                              onChange={(e) => {
+                                const file = e.target.files[0];
+                                if (file) {
+                                  setBarangFile(file);
+                                  setBarangPrev(URL.createObjectURL(file));
+                                }
+                              }}
+                            />
+                          </label>
                         </div>
 
                         <textarea
@@ -296,10 +380,17 @@ export default function BarangDetailPage() {
                         />
 
                         <div className="flex gap-2">
-                          <button onClick={handleKlaimSubmit} disabled={submitting} className="flex-1 bg-[#ffcc00] text-[#003366] font-black py-3 rounded-xl shadow-md">
+                          <button
+                            onClick={handleKlaimSubmit}
+                            disabled={submitting}
+                            className="flex-1 bg-[#ffcc00] text-[#003366] font-black py-3 rounded-xl shadow-md"
+                          >
                             KIRIM
                           </button>
-                          <button onClick={resetFormKlaim} className="px-4 bg-white text-slate-400 font-bold py-3 rounded-xl">
+                          <button
+                            onClick={resetFormKlaim}
+                            className="px-4 bg-white text-slate-400 font-bold py-3 rounded-xl"
+                          >
                             BATAL
                           </button>
                         </div>
@@ -316,25 +407,47 @@ export default function BarangDetailPage() {
         {isOwner && klaims.length > 0 && (
           <div className="mt-12">
             <h2 className="text-2xl font-black text-[#003366] mb-6 flex items-center gap-3">
-              <ShieldCheck className="text-[#ffcc00]" size={28} /> PENGAJUAN KLAIM ({klaims.length})
+              <ShieldCheck className="text-[#ffcc00]" size={28} /> PENGAJUAN
+              KLAIM ({klaims.length})
             </h2>
             <div className="grid grid-cols-1 gap-4">
               {klaims.map((k) => (
-                <div key={k.id} className="bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm flex flex-col md:flex-row gap-6">
+                <div
+                  key={k.id}
+                  className="bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm flex flex-col md:flex-row gap-6"
+                >
                   <div className="flex gap-2">
-                    <img src={k.foto_ktm_url} className="w-32 h-20 object-cover rounded-xl border" title="KTM Pengklaim" />
-                    <img src={k.foto_barang_url} className="w-32 h-20 object-cover rounded-xl border" title="Bukti Barang" />
+                    <img
+                      src={k.foto_ktm_url}
+                      className="w-32 h-20 object-cover rounded-xl border"
+                      title="KTM Pengklaim"
+                    />
+                    <img
+                      src={k.foto_barang_url}
+                      className="w-32 h-20 object-cover rounded-xl border"
+                      title="Bukti Barang"
+                    />
                   </div>
                   <div className="flex-1">
-                    <p className="font-black text-[#003366]">{k.pengklaim?.nama_lengkap}</p>
-                    <p className="text-sm text-slate-500 italic mt-1">"{k.keterangan}"</p>
+                    <p className="font-black text-[#003366]">
+                      {k.pengklaim?.nama_lengkap}
+                    </p>
+                    <p className="text-sm text-slate-500 italic mt-1">
+                      "{k.keterangan}"
+                    </p>
                   </div>
                   {k.status === "menunggu" && (
                     <div className="flex items-center gap-2">
-                      <button onClick={() => handleVerifikasi(k.id, "approve")} className="p-3 bg-green-500 text-white rounded-xl hover:bg-green-600 transition-colors">
+                      <button
+                        onClick={() => handleVerifikasi(k.id, "approve")}
+                        className="p-3 bg-green-500 text-white rounded-xl hover:bg-green-600 transition-colors"
+                      >
                         <CheckCircle size={20} />
                       </button>
-                      <button onClick={() => handleVerifikasi(k.id, "reject")} className="p-3 bg-rose-500 text-white rounded-xl hover:bg-rose-600 transition-colors">
+                      <button
+                        onClick={() => handleVerifikasi(k.id, "reject")}
+                        className="p-3 bg-rose-500 text-white rounded-xl hover:bg-rose-600 transition-colors"
+                      >
                         <XCircle size={20} />
                       </button>
                     </div>

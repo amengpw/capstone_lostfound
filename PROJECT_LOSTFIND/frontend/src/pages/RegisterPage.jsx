@@ -1,4 +1,3 @@
-// ── Register Page (Formal Version) ──────────────────────────────────────────
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
@@ -19,7 +18,6 @@ import {
 import { motion } from "framer-motion";
 import toast from "react-hot-toast";
 
-// 💥 PERBAIKAN DI SINI: Mengubah @/ menjadi ../ agar terbaca sempurna 💥
 import useAuthStore from "../store/authStore.js";
 
 const ROLES = [
@@ -50,7 +48,35 @@ export default function RegisterPage() {
       toast.success("Registrasi Berhasil!");
       navigate("/");
     } catch (err) {
-      toast.error("Gagal mendaftar, silakan cek data Anda kembali.");
+      console.error("=== REGISTRASI GAGAL ===");
+      console.error(err.response?.data);
+
+      let pesanError = "Gagal mendaftar, silakan cek data Anda kembali.";
+
+      if (err.response?.data) {
+        const resData = err.response.data;
+
+        // 💥 DETEKSI OTOMATIS: Jika backend Django bilang email sudah dipakai
+        if (resData.email) {
+          pesanError = Array.isArray(resData.email)
+            ? resData.email[0]
+            : resData.email;
+        }
+        // Jika ada error lain dari backend (misal password kurang kuat, dll)
+        else if (resData.detail || resData.message) {
+          pesanError = resData.detail || resData.message;
+        }
+        // Mengambil error pada field pertama secara dinamis
+        else if (typeof resData === "object") {
+          const fieldPertama = Object.keys(resData)[0];
+          const pesanField = resData[fieldPertama];
+          pesanError = Array.isArray(pesanField)
+            ? `${fieldPertama}: ${pesanField[0]}`
+            : `${fieldPertama}: ${pesanField}`;
+        }
+      }
+
+      toast.error(pesanError);
     } finally {
       setLoading(false);
     }
@@ -202,7 +228,8 @@ export default function RegisterPage() {
                     placeholder="Ulangi Password"
                     {...register("password2", {
                       required: true,
-                      validate: (v) => v === watch("password"),
+                      validate: (v) =>
+                        v === watch("password") || "Password tidak cocok",
                     })}
                   />
                   <button
@@ -213,6 +240,11 @@ export default function RegisterPage() {
                     {showPw2 ? <EyeOff size={20} /> : <Eye size={20} />}
                   </button>
                 </div>
+                {errors.password2 && (
+                  <p className="text-rose-500 text-[10px] font-bold mt-1">
+                    {errors.password2.message}
+                  </p>
+                )}
               </div>
             </div>
 

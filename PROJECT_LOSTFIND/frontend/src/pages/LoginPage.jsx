@@ -31,6 +31,12 @@ export default function LoginPage() {
 
   const onSubmit = async (data) => {
     setLoading(true);
+
+    // 🔍 ERROR HANDLING: Log data sebelum ditembak ke authStore
+    console.log("=== MEMULAI PROSES LOGIN ===");
+    console.log("Mengirim Email:", data.email);
+    console.log("Mengirim Password (Panjang Karakter):", data.password?.length);
+
     try {
       // Memecah objek data menjadi dua parameter (email dan password)
       // agar sesuai dengan ekspektasi fungsi login di authStore.js
@@ -39,11 +45,42 @@ export default function LoginPage() {
       toast.success("Selamat Datang Kembali!");
       navigate("/");
     } catch (err) {
-      toast.error(
-        err.response?.data?.detail ||
-          err.response?.data?.message ||
-          "Login gagal, cek kembali akun Anda.",
-      );
+      // 🔍 ERROR HANDLING: Cetak error sedetail mungkin dari backend ke Console Browser
+      console.error("=== LOGIN GAGAL (DETAIL ERROR) ===");
+      console.error("Status HTTP:", err.response?.status);
+      console.error("Isi Respon Django:", err.response?.data);
+
+      // Default pesan error jika tidak terdefinisi
+      let pesanError = "Login gagal, cek kembali akun Anda.";
+
+      if (err.response) {
+        const status = err.response.status;
+        const resData = err.response.data;
+
+        // 🎯 DETEKSI OTOMATIS JIKA EMAIL/PASSWORD SALAH
+        // (Django / Simple JWT biasanya melempar status 401 atau 400 jika kredensial tidak cocok)
+        if (status === 401 || status === 400) {
+          pesanError =
+            "Email atau Kata Sandi salah! Periksa kembali akun Anda.";
+        } else if (resData?.detail) {
+          pesanError = resData.detail;
+        } else if (resData?.message) {
+          pesanError = resData.message;
+        } else if (typeof resData === "object") {
+          const fieldPertama = Object.keys(resData)[0];
+          const pesanField = resData[fieldPertama];
+          pesanError = Array.isArray(pesanField)
+            ? `${fieldPertama}: ${pesanField[0]}`
+            : `${fieldPertama}: ${pesanField}`;
+        }
+      } else {
+        // Jika backend mati / tidak merespon sama sekali
+        pesanError =
+          "Tidak dapat terhubung ke server. Pastikan backend Anda menyala!";
+      }
+
+      // Memunculkan notifikasi merah di layar
+      toast.error(pesanError);
     } finally {
       setLoading(false);
     }

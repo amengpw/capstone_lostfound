@@ -363,9 +363,12 @@ export function LaporPage() {
               </div>
 
               <div className="col-span-full">
+                {/* 🔒 KINI OPSIONAL: Mengganti bintang merah (*) dengan penanda text-slate-400 */}
                 <label className="block text-xs font-black text-slate-500 mb-2 uppercase ml-1 flex items-center gap-1.5">
                   <Phone size={14} /> No. WhatsApp yang Bisa Dihubungi{" "}
-                  <span className="text-rose-500">*</span>
+                  <span className="text-slate-400 lowercase font-normal italic">
+                    (Opsional)
+                  </span>
                 </label>
                 <div className="relative group">
                   <span className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-400 font-bold border-r border-slate-200 pr-3">
@@ -374,16 +377,9 @@ export function LaporPage() {
                   <input
                     className="w-full bg-slate-50 border border-slate-200 text-[#003366] rounded-2xl pl-16 pr-5 py-3.5 focus:outline-none focus:ring-4 focus:ring-blue-900/5 focus:border-[#003366] transition-all font-medium"
                     placeholder="81234567xxx"
-                    {...register("kontak_wa", {
-                      required: "Nomor kontak WhatsApp aktif wajib diisi",
-                    })}
+                    {...register("kontak_wa")}
                   />
                 </div>
-                {errors.kontak_wa && (
-                  <p className="text-[10px] text-rose-500 mt-2 font-bold flex items-center gap-1 uppercase tracking-tighter">
-                    <AlertCircle size={12} /> {errors.kontak_wa.message}
-                  </p>
-                )}
               </div>
             </div>
           </motion.div>

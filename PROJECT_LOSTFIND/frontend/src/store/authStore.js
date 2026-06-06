@@ -21,11 +21,15 @@ const useAuthStore = create((set) => ({
   },
 
   register: async (formData) => {
-    const { data } = await authAPI.register(formData);
-    localStorage.setItem("access", data.tokens.access);
-    localStorage.setItem("refresh", data.tokens.refresh);
-    set({ user: data.user, isAuthenticated: true });
-    return data.user;
+    try {
+      const { data } = await authAPI.register(formData);
+      localStorage.setItem("access", data.tokens.access);
+      localStorage.setItem("refresh", data.tokens.refresh);
+      set({ user: data.user, isAuthenticated: true });
+      return data.user;
+    } catch (error) {
+      throw error;
+    }
   },
 
   logout: async () => {
