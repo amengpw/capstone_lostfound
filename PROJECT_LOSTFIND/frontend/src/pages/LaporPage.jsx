@@ -159,9 +159,6 @@ export function LaporPage() {
             <h1 className="text-3xl font-black text-[#003366] uppercase tracking-tight">
               Buat Laporan Baru
             </h1>
-            <p className="text-slate-500 font-medium italic">
-              Bantu sesama Civitas UMS dengan informasi yang akurat.
-            </p>
           </div>
         </motion.div>
 
@@ -275,7 +272,7 @@ export function LaporPage() {
                 </label>
                 <input
                   className="w-full bg-slate-50 border border-slate-200 text-[#003366] rounded-2xl px-5 py-3.5 focus:outline-none focus:ring-4 focus:ring-blue-900/5 focus:border-[#003366] transition-all placeholder:text-slate-400 font-medium"
-                  placeholder="Cth: KTM di Perpustakaan Pusat"
+                  placeholder="Cth: KTM"
                   {...register("judul", {
                     required: "Nama/Judul barang wajib diisi",
                   })}
@@ -475,7 +472,7 @@ export function LaporPage() {
                 </>
               ) : (
                 <>
-                  <Upload size={22} /> Terbitkan Laporan Sekarang
+                  <Upload size={22} /> Unggah Laporan
                 </>
               )}
             </button>

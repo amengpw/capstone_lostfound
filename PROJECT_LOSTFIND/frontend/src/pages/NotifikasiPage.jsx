@@ -112,17 +112,6 @@ export default function NotifikasiPage() {
               <h1 className="text-3xl font-black text-[#003366] uppercase tracking-tighter">
                 Pusat Pesan
               </h1>
-              <div className="flex items-center gap-2 mt-1">
-                {unreadCount > 0 ? (
-                  <span className="flex items-center gap-1.5 bg-[#ffcc00]/20 text-[#003366] px-3 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider">
-                    <AlertCircle size={12} /> {unreadCount} Baru
-                  </span>
-                ) : (
-                  <span className="text-slate-400 text-xs font-medium italic">
-                    Semua kabar sudah terpantau
-                  </span>
-                )}
-              </div>
             </div>
           </div>
 

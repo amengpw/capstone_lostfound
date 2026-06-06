@@ -283,7 +283,7 @@ export default function ChatPage() {
                       <div className="flex items-center gap-2 mt-0.5">
                         <CheckCircle2 size={12} className="text-emerald-500" />
                         <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-                          Terhubung ke Ruang
+                          Terhubung
                         </span>
                       </div>
                     </div>

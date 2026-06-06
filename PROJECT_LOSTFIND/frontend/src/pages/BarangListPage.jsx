@@ -73,7 +73,7 @@ export function BarangListPage() {
               <span className="text-[#003366] font-black underline decoration-[#ffcc00] decoration-4">
                 {count}
               </span>{" "}
-              laporan aktif saat ini
+              laporan
             </p>
           </div>
         </motion.div>

@@ -143,7 +143,8 @@ export default function LaporanSayaPage() {
                 {tab === key && (
                   <motion.div
                     layoutId="activeTabBackground"
-                    className="absolute inset-0 bg-[#003366] rounded-[1.5rem] -z-10"
+                    // DI SINI LETAK PERBAIKANNYA: -z-10 sudah dihapus supaya background birunya muncul
+                    className="absolute inset-0 bg-[#003366] rounded-[1.5rem]"
                     transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                   />
                 )}
